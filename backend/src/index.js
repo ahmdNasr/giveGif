@@ -3,15 +3,19 @@ const express = require("express")
 const { registerUser } = require("./use-cases/register-user")
 const { showAllUser } = require("./use-cases/show-all-users")
 const { loginUser } = require("./use-cases/login-user")
-const { doAuthMiddleware } = require("./auth/doAuthMiddleware")
+const { makeDoAuthMiddleware } = require("./auth/doAuthMiddleware")
+const { refreshUserToken } = require("./use-cases/refresh-user-token")
 
 const PORT = 9000
 const app = express()
+const doAuthMiddleware = makeDoAuthMiddleware("access")
+const doRefreshTokenMiddleware = makeDoAuthMiddleware("refresh")
 
 app.use(morgan("dev"))
 app.use(express.json())
 
 app.get("/", (_, res) => res.send("it works :)"))
+
 
 app.get("/users", doAuthMiddleware, async (_, res) => {
     try {
@@ -25,11 +29,22 @@ app.get("/users", doAuthMiddleware, async (_, res) => {
 
 app.post("/users/login", async (req, res) => {
     try {
-        const token = await loginUser({
+        const { accessToken, refreshToken } = await loginUser({
             email: req.body.email,
             password: req.body.password
         })
-        res.json({ token })
+        res.json({ accessToken, refreshToken })
+    } catch (err) {
+        console.log(err)
+        res.status(500).json({ message: err.toString() || "Internal Server Error." })
+    }
+})
+
+app.post("/users/refreshtoken", doRefreshTokenMiddleware, async (req, res) => {
+    try {
+        const userId = req.userClaims.sub
+        const accessToken = await refreshUserToken({ userId })
+        res.json({ token: accessToken })
     } catch (err) {
         console.log(err)
         res.status(500).json({ message: err.toString() || "Internal Server Error." })
