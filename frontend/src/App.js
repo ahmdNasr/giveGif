@@ -3,6 +3,8 @@ import React, { useState } from 'react';
 import LoginPage from './components/pages/Login/LoginPage';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import RegisterPage from './components/pages/Register/RegisterPage';
+import HomePage from './components/pages/Home/HomePage';
+import AuthRequired from './components/common/AuthRequired';
 
 function App() {
   const [token, setToken] = useState();
@@ -15,11 +17,25 @@ function App() {
           <Route path="/" element={<Navigate to={token ? "/home" : "/login"} />} />
           <Route path="/login" element={<LoginPage setToken={setToken} />} />
           <Route path="/register" element={<RegisterPage />} />
-          <Route path="/home" element={<h1>Home</h1>} />
+          <Route
+            path="/home"
+            element={
+              <AuthRequired token={token}>
+                <HomePage />
+              </AuthRequired>
+            }
+          />
         </Routes>
       </BrowserRouter>
     </React.Fragment>
   );
 }
+
+// const ProtectedRoute = (props) => {
+//   if(!props.token) {
+//     return <Navigate to="/login" />;
+//   }
+//   return <><Route {...props} /></>
+// }
 
 export default App;
