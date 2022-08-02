@@ -16,7 +16,6 @@ app.use(express.json())
 
 app.get("/", (_, res) => res.send("it works :)"))
 
-
 app.get("/users", doAuthMiddleware, async (_, res) => {
     try {
         const users = await showAllUser()
@@ -86,19 +85,24 @@ const Dashboard = (props) => {
     )
 }
 
-
-
-
 Exchangeagram
 
 * Users 
     * Auth: Login / Register / Forgot Password
-    * Profile, Auth, ...) 
+    * Profile
+        * profile picture
+        * username
+        * status
+        * follower / followed by
     * status von user "on the line" & "off the line"
 * Postings (Images) + Reply auch mit Images...
     * ReplyHell: Auf ein Reply kann man nochmal replyn
     * Feed mit Ranking basieren auf Likes + Images + ReplyHell 
 * verschiedenen Likes (Mülltonne + Herz + ...)
+* Melde-Button für verstörende Inhalte
+    -> Admin bekommt eine E-Mail
+    -> bei >20% oder mindestens 3 Meldungen von Likes wird der post automatisch versteckt, bis der admin es bestätigt / zurücksetzt
+* Follow function
 
 Technical stuff:
 * S3 Buckets für file-storage
