@@ -1,48 +1,54 @@
-const jwt = require("jsonwebtoken")
+const jwt = require("jsonwebtoken");
 
-function makeDoAuthMiddleware(validTokenType = "access") { // factory
-    return function doAuthMiddleware(req, res, next) {
-        const __unauthorized = () => res.status(401).json({ message: "Forbidden. Please login first."})
-        
-        try {
-            const token = extractTokenFromRequest(req, validTokenType, __unauthorized)
-            
-            const userClaims = jwt.verify(token, process.env.JWT_SECRET, { algorithms: ["HS256"] })
-            if(userClaims.tokenType !== validTokenType) {
-                return __unauthorized() 
-            }
+function makeDoAuthMiddleware(validTokenType = "access") {
+  // factory
+  return function doAuthMiddleware(req, res, next) {
+    const __unauthorized = () =>
+      res.status(401).json({ message: "Forbidden. Please login first." });
 
-            // SUCCESS
-            req.userClaims = userClaims
-            next()
-        } catch (error) {
-            console.log(error)
-            return __unauthorized()
-        }
+    try {
+      const token = extractTokenFromRequest(req, validTokenType);
+      if (!token) {
+        return __unauthorized();
+      }
+
+      const userClaims = jwt.verify(token, process.env.JWT_SECRET, {
+        algorithms: ["HS256"],
+      });
+      if (userClaims.tokenType !== validTokenType) {
+        return __unauthorized();
+      }
+
+      // SUCCESS
+      req.userClaims = userClaims;
+      next();
+    } catch (error) {
+      console.log(error);
+      return __unauthorized();
     }
+  };
 }
 
-function extractTokenFromRequest(req, tokenType = "access", __unauthorized) {
-    // FIXME: Extend with Cookies...
-    if(tokenType === "refresh" && req.body?.refreshToken) {
-        return req.body.refreshToken
-    }
+function extractTokenFromRequest(req, tokenType = "access") {
+  // FIXME: Extend with Cookies...
+  if (tokenType === "refresh" && req.body?.refreshToken) {
+    return req.body.refreshToken;
+  }
 
-    const tokenInfo = req.headers.token
-    console.log(tokenInfo)
-    if(!tokenInfo) {
-        return __unauthorized()
-    }
+  const tokenInfo = req.headers.token;
+  console.log(tokenInfo);
+  if (!tokenInfo) {
+    return null;
+  }
 
-    const [tokenStrategy, token] = tokenInfo.split(" ")
-    if(tokenStrategy !== "JWT" || !token) {
-        return __unauthorized()
-    }
+  const [tokenStrategy, token] = tokenInfo.split(" ");
+  if (tokenStrategy !== "JWT" || !token) {
+    return null;
+  }
 
-    return token
+  return token;
 }
-
 
 module.exports = {
-    makeDoAuthMiddleware
-}
+  makeDoAuthMiddleware,
+};
