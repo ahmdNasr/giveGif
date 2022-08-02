@@ -1,3 +1,4 @@
+const cors = require("cors")
 const morgan = require("morgan")
 const express = require("express")
 const { registerUser } = require("./use-cases/register-user")
@@ -11,6 +12,7 @@ const app = express()
 const doAuthMiddleware = makeDoAuthMiddleware("access")
 const doRefreshTokenMiddleware = makeDoAuthMiddleware("refresh")
 
+app.use(cors())
 app.use(morgan("dev"))
 app.use(express.json())
 
@@ -50,7 +52,7 @@ app.post("/users/refreshtoken", doRefreshTokenMiddleware, async (req, res) => {
     }
 })
 
-app.post("/users", async (req, res) => {
+app.post("/users/register", async (req, res) => {
     try{ 
         const user = await registerUser(req.body)
         res.json(user)

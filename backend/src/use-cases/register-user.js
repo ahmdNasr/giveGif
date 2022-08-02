@@ -1,12 +1,12 @@
 const { UserDAO } = require("../db-access");
 const { hash, createRandomHash } = require("../utils/hash");
 
-async function registerUser({ name, email, password }) {
+async function registerUser({ username, email, password }) {
     const passwordSalt = createRandomHash()
     const passwordHash = hash(password + '' + passwordSalt) 
 
     const newUser = {
-        name,
+        username,
         email,
         emailVerified: false,
         passwordHash,
@@ -16,7 +16,7 @@ async function registerUser({ name, email, password }) {
     const insertResult = await UserDAO.insertOne(newUser)
     const userView = ({
         _id: insertResult.insertedId,
-        name,
+        username,
         email,
     })
 
