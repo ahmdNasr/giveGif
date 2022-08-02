@@ -1,7 +1,7 @@
 import { Box, Typography, Container } from "@mui/material";
 import { Link } from "react-router-dom";
 
-const DefaultPage = ({ title = "Page", children }) => {
+const DefaultPage = ({ title = "Page", icon, children }) => {
   return (
     <Box>
       <Box
@@ -18,7 +18,7 @@ const DefaultPage = ({ title = "Page", children }) => {
       </Box>
       <Container>
         <Typography component="h1" variant="h5">
-          {title}
+          {title} {icon}
         </Typography>
 
         {children}
