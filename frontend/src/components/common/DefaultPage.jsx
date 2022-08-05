@@ -18,9 +18,8 @@ const DefaultPage = ({ title = "Page", icon, children }) => {
       </Box>
       <Container>
         <Typography component="h1" variant="h5">
-          {title} {icon}
+          {icon} {title}
         </Typography>
-
         {children}
       </Container>
     </Box>
