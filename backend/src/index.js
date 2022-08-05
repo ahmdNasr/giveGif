@@ -1,11 +1,14 @@
 const cors = require("cors");
 const morgan = require("morgan");
+const multer = require("multer");
 const express = require("express");
 const { registerUser } = require("./use-cases/register-user");
 const { showAllUser } = require("./use-cases/show-all-users");
 const { loginUser } = require("./use-cases/login-user");
 const { makeDoAuthMiddleware } = require("./auth/doAuthMiddleware");
 const { refreshUserToken } = require("./use-cases/refresh-user-token");
+const { showFeed } = require("./use-cases/show-feed");
+const { postGiveGif } = require("./use-cases/post-give-gif");
 
 const PORT = 9000;
 const app = express();
@@ -14,6 +17,7 @@ const doRefreshTokenMiddleware = makeDoAuthMiddleware("refresh");
 
 app.use(cors());
 app.use(morgan("dev"));
+app.use(express.static("uploads"));
 app.use(express.json());
 
 app.get("/", (_, res) => res.send("it works :)"));
@@ -69,6 +73,48 @@ app.post("/users/register", async (req, res) => {
       .json({ message: err.toString() || "Internal Server Error." });
   }
 });
+
+app.get("/posts", doAuthMiddleware, async (req, res) => {
+  try {
+    const feed = await showFeed();
+    res.json({ feed });
+  } catch (err) {
+    console.log(err);
+    res
+      .status(500)
+      .json({ message: err.toString() || "Error uploading your gif." });
+  }
+});
+
+const storage = multer.diskStorage({
+  destination: function (_, _, cb) {
+    cb(null, "uploads");
+  },
+  filename: function (_, file, cb) {
+    cb(null, Date.now() + "_" + file.originalname); //Appending extension
+  },
+});
+const uploadMiddleware = multer({ storage }).single("gif");
+app.post(
+  "/posts/giveGif",
+  doAuthMiddleware,
+  uploadMiddleware,
+  async (req, res) => {
+    try {
+      const userId = req.userClaims.sub;
+      const postedGif = await postGiveGif({
+        userId,
+        filepath: req.file.filename,
+      });
+      res.json(postedGif);
+    } catch (err) {
+      console.log(err);
+      res
+        .status(500)
+        .json({ message: err.toString() || "Error uploading your gif." });
+    }
+  }
+);
 
 app.listen(PORT, () => console.log("Server listening at PORT", PORT));
 

@@ -3,8 +3,9 @@ import AddAPhotoOutlinedIcon from "@mui/icons-material/AddAPhotoOutlined";
 import { Box, Button } from "@mui/material";
 import { useState } from "react";
 import { useEffect } from "react";
+import { apiBaseUrl } from "../../../api/api";
 
-const PostPage = () => {
+const PostPage = (props) => {
   const [gifFile, setGifFile] = useState();
 
   const [imgPreview, setImgPreview] = useState("");
@@ -18,7 +19,18 @@ const PostPage = () => {
   }, [gifFile]);
 
   const uploadFile = () => {
-    alert("Not implemented!");
+    const formData = new FormData();
+    formData.append("gif", gifFile, gifFile.name);
+
+    fetch(apiBaseUrl + "/posts/giveGif", {
+      headers: {
+        token: `JWT ${props.token}`,
+      },
+      method: "post",
+      body: formData,
+    })
+      .then((res) => res.json())
+      .then((data) => console.log(data));
   };
 
   return (
@@ -31,6 +43,7 @@ const PostPage = () => {
           }
           alt="Upload preview"
         />
+
         <Button variant="outlined" component="label" color="secondary">
           {gifFile ? "Change File" : "Choose File"}
           <input

@@ -25,7 +25,7 @@ function App() {
             path="/home"
             element={
               <AuthRequired token={token}>
-                <HomePage />
+                <HomePage token={token} />
               </AuthRequired>
             }
           />
@@ -33,7 +33,7 @@ function App() {
             path="/give"
             element={
               <AuthRequired token={token}>
-                <PostPage />
+                <PostPage token={token} />
               </AuthRequired>
             }
           />
