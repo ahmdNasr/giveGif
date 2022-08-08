@@ -2,12 +2,18 @@ import * as React from "react";
 import { apiBaseUrl } from "../../api/api";
 import GifUploadDialog from "./GifUploadDialog";
 
-const ReplyToPostDialog = ({ token, open, handleClose, postId }) => {
+const ReplyToPostDialog = ({
+  token,
+  open,
+  handleClose,
+  postId,
+  replyPath = "replies",
+}) => {
   const replyWithGifFile = (gifFile) => {
     const formData = new FormData();
     formData.append("gif", gifFile, gifFile.name);
     formData.append("postId", postId);
-    formData.append("replyPath", "replies"); // FIXME: change hard coded "replies" to acutal reply path...
+    formData.append("replyPath", replyPath); // FIXME: change hard coded "replies" to acutal reply path...
 
     fetch(apiBaseUrl + "/posts/replyToPost", {
       headers: {

@@ -23,7 +23,7 @@ async function insertOne(userInfo) {
 }
 
 // replyPath: "replies" --> reply to mother post
-// replyPath: "replies.0" --> reply to first reply of mother post
+// replyPath: "replies.11.replies" --> reply to first reply of mother post
 // replyPath: "replies.0.replies.2.replies.3.replies" --> reply to some very deep nested reply
 async function updatePostReplyHell(postId, replyPath, replyPost) {
   const db = await getDB();
