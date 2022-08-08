@@ -9,6 +9,12 @@ import AddAPhotoOutlinedIcon from "@mui/icons-material/AddAPhotoOutlined";
 const HomePage = (props) => {
   const [feed, setFeed] = useState([]);
   const [errorMessage, setErrorMessage] = useState("");
+  const [replyCounter, setReplyCounter] = useState(0); // used to repload feed
+
+  console.log(replyCounter);
+
+  // FIXME: use a result param from api to update part of the feed (instead of load entire feed from backend over and over again)
+  const onPostReply = () => setReplyCounter((prev) => prev + 1);
 
   useEffect(() => {
     fetch(apiBaseUrl + "/posts", {
@@ -22,7 +28,7 @@ const HomePage = (props) => {
         }
         setFeed(data.feed);
       });
-  }, [props.token]);
+  }, [props.token, replyCounter]);
 
   const [addPostDialogOpen, setAddPostDialogOpen] = useState(false);
   const handleCloseDialog = () => {
@@ -43,13 +49,19 @@ const HomePage = (props) => {
           handleClose={handleCloseDialog}
           open={addPostDialogOpen}
           token={props.token}
+          onPost={onPostReply}
         />
       </>
 
       {errorMessage && <p>{errorMessage}</p>}
       {feed &&
         feed.map((post) => (
-          <Post key={post._id} {...post} token={props.token} />
+          <Post
+            key={post._id}
+            {...post}
+            token={props.token}
+            onReply={onPostReply}
+          />
         ))}
     </DefaultPage>
   );

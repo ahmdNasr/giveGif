@@ -8,6 +8,7 @@ const ReplyToPostDialog = ({
   handleClose,
   postId,
   replyPath = "replies",
+  onReply,
 }) => {
   const replyWithGifFile = (gifFile) => {
     const formData = new FormData();
@@ -26,6 +27,7 @@ const ReplyToPostDialog = ({
       .then((data) => {
         console.log(data);
         handleClose(false); // dialog schließen nach upload
+        onReply(); // wird aufgerufen um den feed neu zu rendern...
       });
   };
 

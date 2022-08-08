@@ -13,7 +13,8 @@ const Post = ({
   likes = [17, 9, 4],
   replies,
   token,
-  replyPath = "replies", // replies.3.replies
+  replyPath = "replies", // replies.3.replies,
+  onReply,
 }) => {
   const [open, setOpen] = React.useState(false);
 
@@ -78,6 +79,7 @@ const Post = ({
                 _id={_id}
                 token={token}
                 replyPath={`${replyPath}.${replyIndex}.replies`} // replies.3.replies.6.replies
+                onReply={onReply}
               />
             )
           )}
@@ -89,6 +91,7 @@ const Post = ({
         token={token}
         postId={_id}
         replyPath={replyPath}
+        onReply={onReply}
       />
     </Box>
   );

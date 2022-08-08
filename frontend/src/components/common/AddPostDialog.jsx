@@ -2,7 +2,7 @@ import * as React from "react";
 import { apiBaseUrl } from "../../api/api";
 import GifUploadDialog from "./GifUploadDialog";
 
-const AddPostDialog = ({ token, open, handleClose }) => {
+const AddPostDialog = ({ token, open, handleClose, onPost }) => {
   const uploadFile = (gifFile) => {
     const formData = new FormData();
     formData.append("gif", gifFile, gifFile.name);
@@ -18,6 +18,7 @@ const AddPostDialog = ({ token, open, handleClose }) => {
       .then((data) => {
         console.log(data);
         handleClose(false); // dialog schließen nach upload
+        onPost();
       });
   };
 
