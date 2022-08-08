@@ -1,9 +1,10 @@
-import { Button, IconButton } from "@mui/material";
+import { Button, IconButton, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import { apiBaseUrl } from "../../../api/api";
 import ReplyIcon from "@mui/icons-material/Reply";
 import React from "react";
 import ReplyToPostDialog from "../../common/ReplyToPostDialog";
+import moment from "moment";
 
 const Post = ({
   _id,
@@ -36,6 +37,12 @@ const Post = ({
       }}
     >
       <Box sx={{ width: 480 }}>
+        <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+          <Typography>By {postedBy}</Typography>
+          <Typography style={{ color: "gray" }}>
+            {moment(postedAt).fromNow()}
+          </Typography>
+        </Box>
         <img
           width="100%"
           src={apiBaseUrl + "/" + filepath}
