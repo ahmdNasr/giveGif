@@ -1,5 +1,6 @@
 import { Box, Typography, Container } from "@mui/material";
 import { Link } from "react-router-dom";
+import React from "react";
 
 const DefaultPage = ({ title = "Page", icon, children }) => {
   return (
@@ -8,12 +9,11 @@ const DefaultPage = ({ title = "Page", icon, children }) => {
         sx={{
           backgroundColor: "lightgray",
           padding: 3,
-          display: "grid",
+          display: "flex",
           gap: 1,
         }}
       >
         <Link to="/home">Home</Link>
-        <Link to="/give">Give GIF</Link>
         <Link to="/profile">Profile</Link>
       </Box>
       <Container>

@@ -9,6 +9,7 @@ const { makeDoAuthMiddleware } = require("./auth/doAuthMiddleware");
 const { refreshUserToken } = require("./use-cases/refresh-user-token");
 const { showFeed } = require("./use-cases/show-feed");
 const { postGiveGif } = require("./use-cases/post-give-gif");
+const { replyToPost } = require("./use-cases/reply-to-post");
 
 const PORT = 9000;
 const app = express();
@@ -112,6 +113,29 @@ app.post(
       res
         .status(500)
         .json({ message: err.toString() || "Error uploading your gif." });
+    }
+  }
+);
+
+app.post(
+  "/posts/replyToPost",
+  doAuthMiddleware,
+  uploadMiddleware,
+  async (req, res) => {
+    try {
+      const userId = req.userClaims.sub;
+      const repliedGif = await replyToPost({
+        userId,
+        filepath: req.file.filename,
+        postId: req.body.postId, // "Mother-Post" / "Root-Post"
+        replyPath: req.body.replyPath, // how deep the reply goes ?
+      });
+      res.json(repliedGif);
+    } catch (err) {
+      console.log(err);
+      res.status(500).json({
+        message: err.toString() || "Error uploading your gif as reply.",
+      });
     }
   }
 );

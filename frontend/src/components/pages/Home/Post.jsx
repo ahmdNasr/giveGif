@@ -2,6 +2,8 @@ import { Button, IconButton } from "@mui/material";
 import { Box } from "@mui/system";
 import { apiBaseUrl } from "../../../api/api";
 import ReplyIcon from "@mui/icons-material/Reply";
+import React from "react";
+import ReplyToPostDialog from "../../common/ReplyToPostDialog";
 
 const Post = ({
   _id,
@@ -10,7 +12,18 @@ const Post = ({
   postedAt,
   likes = [17, 9, 4],
   replies,
+  token,
 }) => {
+  const [open, setOpen] = React.useState(false);
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const openReplyDialog = () => {
+    setOpen(true);
+  };
+
   return (
     <Box
       sx={{
@@ -31,10 +44,17 @@ const Post = ({
           <Button sx={{ fontSize: "large" }}>🤮 ({likes[2]})</Button>
         </Box>
 
-        <IconButton variant="" color="primary">
+        <IconButton variant="" color="primary" onClick={openReplyDialog}>
           <ReplyIcon />
         </IconButton>
       </Box>
+
+      <ReplyToPostDialog
+        open={open}
+        handleClose={handleClose}
+        token={token}
+        postId={_id}
+      />
     </Box>
   );
 };

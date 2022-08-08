@@ -1,7 +1,10 @@
+import { IconButton } from "@mui/material";
 import { useEffect, useState } from "react";
 import { apiBaseUrl } from "../../../api/api";
+import AddPostDialog from "../../common/AddPostDialog";
 import DefaultPage from "../../common/DefaultPage";
 import Post from "./Post";
+import AddAPhotoOutlinedIcon from "@mui/icons-material/AddAPhotoOutlined";
 
 const HomePage = (props) => {
   const [feed, setFeed] = useState([]);
@@ -21,10 +24,33 @@ const HomePage = (props) => {
       });
   }, [props.token]);
 
+  const [addPostDialogOpen, setAddPostDialogOpen] = useState(false);
+  const handleCloseDialog = () => {
+    setAddPostDialogOpen(false);
+  };
+
+  const openReplyDialog = () => {
+    setAddPostDialogOpen(true);
+  };
+
   return (
     <DefaultPage title="Home">
+      <>
+        <IconButton onClick={openReplyDialog}>
+          <AddAPhotoOutlinedIcon />
+        </IconButton>
+        <AddPostDialog
+          handleClose={handleCloseDialog}
+          open={addPostDialogOpen}
+          token={props.token}
+        />
+      </>
+
       {errorMessage && <p>{errorMessage}</p>}
-      {feed && feed.map((post) => <Post key={post._id} {...post} />)}
+      {feed &&
+        feed.map((post) => (
+          <Post key={post._id} {...post} token={props.token} />
+        ))}
     </DefaultPage>
   );
 };

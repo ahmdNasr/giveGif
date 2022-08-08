@@ -25,7 +25,7 @@ async function insertOne(userInfo) {
 // replyPath: "replies" --> reply to mother post
 // replyPath: "replies.0" --> reply to first reply of mother post
 // replyPath: "replies.0.replies.2.replies.3.replies" --> reply to some very deep nested reply
-async function replyToPost(postId, replyPath, replyPost) {
+async function updatePostReplyHell(postId, replyPath, replyPost) {
   const db = await getDB();
 
   // IDEA: make "replyPath" just an array of indezies and add all the "replies." before and after each index ?
@@ -41,6 +41,6 @@ async function replyToPost(postId, replyPath, replyPost) {
 module.exports = {
   findAll,
   findById,
-  replyToPost,
+  updatePostReplyHell,
   insertOne,
 };
