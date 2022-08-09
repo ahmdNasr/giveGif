@@ -1,9 +1,9 @@
 import { Button, IconButton, Typography } from "@mui/material";
 import { Box } from "@mui/system";
-import { apiBaseUrl } from "../../../api/api";
+import { apiBaseUrl } from "../../api/api";
 import ReplyIcon from "@mui/icons-material/Reply";
 import React from "react";
-import ReplyToPostDialog from "../../common/ReplyToPostDialog";
+import ReplyToPostDialog from "./ReplyToPostDialog";
 import moment from "moment";
 
 const Post = ({

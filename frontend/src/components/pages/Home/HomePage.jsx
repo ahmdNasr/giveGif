@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { apiBaseUrl } from "../../../api/api";
 import AddPostDialog from "../../common/AddPostDialog";
 import DefaultPage from "../../common/DefaultPage";
-import Post from "./Post";
+import Post from "../../common/Post";
 import AddAPhotoOutlinedIcon from "@mui/icons-material/AddAPhotoOutlined";
 
 const HomePage = (props) => {

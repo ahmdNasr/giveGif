@@ -10,6 +10,7 @@ const { refreshUserToken } = require("./use-cases/refresh-user-token");
 const { showFeed } = require("./use-cases/show-feed");
 const { postGiveGif } = require("./use-cases/post-give-gif");
 const { replyToPost } = require("./use-cases/reply-to-post");
+const { showMyProfile } = require("./use-cases/show-my-profile");
 
 const PORT = 9000;
 const app = express();
@@ -74,6 +75,21 @@ app.post("/users/register", async (req, res) => {
       .json({ message: err.toString() || "Internal Server Error." });
   }
 });
+
+// eingeloggter user mit token möchte sein eigenes profil fetchen
+app.get("/users/profile", doAuthMiddleware, async (req, res) => {
+  try {
+    const userId = req.userClaims.sub;
+    const userProfile = await showMyProfile({ userId });
+
+    res.json(userProfile);
+  } catch (err) {
+    console.log(err);
+    res
+      .status(500)
+      .json({ message: err.toString() || "Internal Server Error." });
+  }
+})
 
 app.get("/posts", doAuthMiddleware, async (req, res) => {
   try {

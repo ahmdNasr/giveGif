@@ -5,6 +5,7 @@ import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import RegisterPage from "./components/pages/Register/RegisterPage";
 import HomePage from "./components/pages/Home/HomePage";
 import AuthRequired from "./components/common/AuthRequired";
+import UserProfilePage from "./components/pages/Profile/UserProfilePage";
 
 function App() {
   const [token, setToken] = useState();
@@ -25,6 +26,14 @@ function App() {
             element={
               <AuthRequired token={token}>
                 <HomePage token={token} />
+              </AuthRequired>
+            }
+          />
+          <Route
+            path="/profile"
+            element={
+              <AuthRequired token={token}>
+                <UserProfilePage token={token} />
               </AuthRequired>
             }
           />

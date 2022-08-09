@@ -22,6 +22,13 @@ async function insertOne(userInfo) {
   return db.collection(usersCollectionName).insertOne(userInfo);
 }
 
+async function findPostsByUserId(userId) {
+  const db = await getDB();
+  const postsOfUser = await db.collection(usersCollectionName).find({ postedBy: userId }).toArray();
+  console.log(postsOfUser);
+  return postsOfUser;
+}
+
 // replyPath: "replies" --> reply to mother post
 // replyPath: "replies.11.replies" --> reply to first reply of mother post
 // replyPath: "replies.0.replies.2.replies.3.replies" --> reply to some very deep nested reply
@@ -43,4 +50,5 @@ module.exports = {
   findById,
   updatePostReplyHell,
   insertOne,
+  findPostsByUserId
 };
