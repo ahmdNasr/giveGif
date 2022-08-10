@@ -4,7 +4,7 @@ const { makeUser } = require("../domain/User");
 async function showMyProfile({ userId }) {
     const foundUser = await UserDAO.findById(userId);
     if (!foundUser) {
-        throw new Error('User not found')
+        throw new Error("User not found");
     }
 
     const user = makeUser(foundUser);
@@ -17,10 +17,10 @@ async function showMyProfile({ userId }) {
         email: user.email,
         profilePicture: user.profilePicture,
         status: user.status,
-        posts: posts
-    }
+        posts: posts,
+    };
 }
 
 module.exports = {
-    showMyProfile
-}
+    showMyProfile,
+};

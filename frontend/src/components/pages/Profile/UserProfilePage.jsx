@@ -25,7 +25,7 @@ const UserProfilePage = (props) => {
     }, [props.token]);
 
     return (
-        <DefaultPage title="UserProfile">
+        <DefaultPage title="UserProfile" token={props.token}>
             <Avatar
                 sx={{ width: 200, height: 200 }}
                 alt={profileData.username}

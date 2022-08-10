@@ -10,6 +10,7 @@ import UserProfilePage from "./components/pages/Profile/UserProfilePage";
 
 function App() {
     const [token, setToken] = useState();
+    const [errorMessage, setErrorMessage] = useState("");
 
     let theme = createTheme({
         palette: {
@@ -63,7 +64,11 @@ function App() {
                             path="/home"
                             element={
                                 <AuthRequired token={token}>
-                                    <HomePage token={token} />
+                                    <HomePage
+                                        token={token}
+                                        errorMessage={errorMessage}
+                                        setErrorMessage={setErrorMessage}
+                                    />
                                 </AuthRequired>
                             }
                         />
