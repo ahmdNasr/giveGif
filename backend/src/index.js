@@ -1,4 +1,5 @@
 const cors = require("cors");
+const cookieSession = require('cookie-session')
 const morgan = require("morgan");
 const multer = require("multer");
 const express = require("express");
@@ -18,10 +19,27 @@ const app = express();
 const doAuthMiddleware = makeDoAuthMiddleware("access");
 const doRefreshTokenMiddleware = makeDoAuthMiddleware("refresh");
 
-app.use(cors());
+app.use(cors({ origin: [process.env.FRONTEND_URL], credentials: true }));
+
+const oneDayInMs = 24 * 60 * 60 * 1000;
+const isLocalHost = process.env.FRONTEND_URL === 'http://localhost:3000';
+app.set('trust proxy', 1); // trust first proxy
+// cookie session parser
+app.use(
+  cookieSession({
+    name: 'session',
+    secret: process.env.COOKIE_SESSION_SECRET,
+    httpOnly: true,
+    expires: new Date(Date.now() + oneDayInMs),
+    sameSite: isLocalHost ? 'lax' : 'none',
+    secure: isLocalHost ? false : true,
+  })
+);
+
 app.use(morgan("dev"));
 app.use(express.static("uploads"));
 app.use(express.json());
+
 
 app.get("/", (_, res) => res.send("it works :)"));
 
@@ -43,6 +61,10 @@ app.post("/users/login", async (req, res) => {
             email: req.body.email,
             password: req.body.password,
         });
+        if(refreshToken) {
+            console.log('refresh', refreshToken);
+            req.session.refreshToken = refreshToken;
+        }
         res.json({ accessToken, refreshToken });
     } catch (err) {
         console.log(err);

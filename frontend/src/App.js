@@ -69,7 +69,7 @@ function App() {
                         <Route
                             path="/home"
                             element={
-                                <AuthRequired token={token}>
+                                <AuthRequired token={token} setToken={setToken}>
                                     <HomePage
                                         token={token}
                                         errorMessage={errorMessage}
@@ -81,7 +81,7 @@ function App() {
                         <Route
                             path="/profile"
                             element={
-                                <AuthRequired token={token}>
+                                <AuthRequired token={token} setToken={setToken}>
                                     <UserProfilePage token={token} />
                                 </AuthRequired>
                             }

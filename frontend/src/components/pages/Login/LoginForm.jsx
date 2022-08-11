@@ -20,6 +20,7 @@ const LoginForm = ({ setToken, errorMessage, setErrorMessage }) => {
                 email,
                 password,
             }),
+            credentials: 'include'
         })
             .then((res) => res.json())
             .then((result) => {

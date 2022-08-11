@@ -30,13 +30,11 @@ function makeDoAuthMiddleware(validTokenType = "access") {
 }
 
 function extractTokenFromRequest(req, tokenType = "access") {
-  // FIXME: Extend with Cookies...
-  if (tokenType === "refresh" && req.body?.refreshToken) {
-    return req.body.refreshToken;
+  if (tokenType === "refresh") {
+    return req.session?.refreshToken || req.body?.refreshToken;
   }
 
   const tokenInfo = req.headers.token;
-  console.log(tokenInfo);
   if (!tokenInfo) {
     return null;
   }
