@@ -15,14 +15,30 @@ const UserProfilePage = (props) => {
             headers: { token: `JWT ${props.token}` },
         })
             .then((res) => res.json())
-            .then((data) => {
-                if (!data._id) {
-                    setErrorMessage(data.message || "Error loading user data.");
+            .then((profileData) => {
+                if (!profileData._id) {
+                    setErrorMessage(profileData.message || "Error loading user data.");
                     return;
                 }
-                setProfileData(data);
+                setProfileData(profileData);
             });
     }, [props.token]);
+
+    const changeUserStatus = async (e) => {
+        const status = e.target.checked ? 'on the line' : 'off the line';
+        fetch(apiBaseUrl + '/users/changestatus', {
+            method: 'PUT',
+            headers: { token: `JWT ${props.token}`, "Content-Type": 'application/json' },
+            body: JSON.stringify({status})
+        }).then(res => res.json())
+        .then((profileData) => {
+            if (!profileData._id) {
+                setErrorMessage(profileData.message || "Error loading user data.");
+                return;
+            }
+            setProfileData(prev => ({...prev, ...profileData}));
+        });
+    }
 
     return (
         <DefaultPage title="UserProfile" token={props.token}>
@@ -37,7 +53,7 @@ const UserProfilePage = (props) => {
             />
             <p>{profileData.username}</p>
             <FormControlLabel
-                control={<MuiSwitch sx={{ m: 1 }} defaultChecked />}
+                control={<MuiSwitch sx={{ m: 1 }} defaultChecked onChange={changeUserStatus}/>}
                 label={profileData.status}
             />
             {profileData.posts &&

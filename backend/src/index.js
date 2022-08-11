@@ -11,6 +11,7 @@ const { showFeed } = require("./use-cases/show-feed");
 const { postGiveGif } = require("./use-cases/post-give-gif");
 const { replyToPost } = require("./use-cases/reply-to-post");
 const { showMyProfile } = require("./use-cases/show-my-profile");
+const { changeUserStatus } = require("./use-cases/change-user-status");
 
 const PORT = 9000;
 const app = express();
@@ -155,6 +156,21 @@ app.post(
         }
     }
 );
+
+app.put('/users/changestatus',doAuthMiddleware, async (req,res) => {
+    
+    try {
+        const status = req.body.status;
+        const userId = req.userClaims.sub;
+        const response = await changeUserStatus({userId, status});
+        res.json(response);
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({
+            message: err.toString() || "Error uploading your gif as reply.",
+        });
+    }
+})
 
 app.listen(PORT, () => console.log("Server listening at PORT", PORT));
 

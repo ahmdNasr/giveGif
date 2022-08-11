@@ -27,9 +27,15 @@ async function insertOne(userInfo) {
     return db.collection(usersCollectionName).insertOne(userInfo) // insertOne() returned auch eine promise, daher await
 }
 
+async function findUserAndUpdateStatus({userId, status}) {
+    const db = await getDB();
+    return db.collection(usersCollectionName).findOneAndUpdate({_id: ObjectId(userId)}, {$set: {status}}, {returnDocument: 'after'});
+}
+
 module.exports = {
     findAll,
     findById,
     findByEmail,
-    insertOne
+    insertOne,
+    findUserAndUpdateStatus
 }

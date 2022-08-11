@@ -4,8 +4,8 @@ import { useNavigate } from "react-router-dom";
 import { apiBaseUrl } from "../../../api/api";
 
 const LoginForm = ({ setToken, errorMessage, setErrorMessage }) => {
-    const [email, setEmail] = useState("max@super-code.de");
-    const [password, setPassword] = useState("baum123");
+    const [email, setEmail] = useState("ingo2@super-code.de");
+    const [password, setPassword] = useState("hallo123");
 
     const navigate = useNavigate();
     const handleSubmit = (event) => {
