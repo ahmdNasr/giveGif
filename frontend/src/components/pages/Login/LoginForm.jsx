@@ -3,11 +3,9 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { apiBaseUrl } from "../../../api/api";
 
-const LoginForm = ({ setToken }) => {
+const LoginForm = ({ setToken, errorMessage, setErrorMessage }) => {
     const [email, setEmail] = useState("max@super-code.de");
     const [password, setPassword] = useState("baum123");
-
-    const [errorMessage, setErrorMessage] = useState("");
 
     const navigate = useNavigate();
     const handleSubmit = (event) => {
@@ -25,13 +23,12 @@ const LoginForm = ({ setToken }) => {
         })
             .then((res) => res.json())
             .then((result) => {
-                console.log(result);
-
                 if (result.message) {
                     return setErrorMessage(result.message);
                 }
 
                 setToken(result.accessToken);
+                setErrorMessage(null);
                 navigate("/");
             });
     };

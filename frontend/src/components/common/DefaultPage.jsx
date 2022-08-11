@@ -8,7 +8,7 @@ import BottomNavigationAction from "@mui/material/BottomNavigationAction";
 import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
 
-const DefaultPage = ({ title = "Page", icon, children, token }) => {
+const DefaultPage = ({ title = "Page", icon, children, offTheLine }) => {
     const navigate = useNavigate();
     const [value, setValue] = React.useState(0);
     const [anchorEl, setAnchorEl] = React.useState(null);
@@ -16,10 +16,10 @@ const DefaultPage = ({ title = "Page", icon, children, token }) => {
     const handleMenu = (event) => {
         setAnchorEl(event.currentTarget);
     };
-    console.log(token);
     const handleClose = () => {
         setAnchorEl(null);
     };
+
     return (
         <Box>
             <Box
@@ -38,19 +38,20 @@ const DefaultPage = ({ title = "Page", icon, children, token }) => {
                     boxShadow: "0 0px  15px hsla(45, 0%, 57%, 0.5)",
                 }}
             >
-                <Typography
-                    component="h1"
-                    variant="h1"
-                    sx={{
-                        fontSize: "3rem",
-                        color: "primary.main",
-                    }}
-                >
-                    give
+                <Box sx={{ display: "flex" }}>
                     <Typography
                         component="h1"
                         variant="h1"
-                        display="inline"
+                        sx={{
+                            fontSize: "3rem",
+                            color: "primary.main",
+                        }}
+                    >
+                        give
+                    </Typography>
+                    <Typography
+                        component="h1"
+                        variant="h1"
                         sx={{
                             fontSize: "3rem",
                             color: "primary.accent",
@@ -58,13 +59,13 @@ const DefaultPage = ({ title = "Page", icon, children, token }) => {
                     >
                         Gif
                     </Typography>
-                </Typography>
-                {!token && (
+                </Box>
+                {offTheLine && (
                     <Button variant="text" onClick={() => navigate("/login")}>
                         Login
                     </Button>
                 )}
-                {token && (
+                {!offTheLine && (
                     <div>
                         <Avatar
                             sx={{ bgcolor: "primary.dark" }}

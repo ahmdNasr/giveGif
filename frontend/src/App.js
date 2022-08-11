@@ -57,7 +57,13 @@ function App() {
                         />
                         <Route
                             path="/login"
-                            element={<LoginPage setToken={setToken} />}
+                            element={
+                                <LoginPage
+                                    setToken={setToken}
+                                    errorMessage={errorMessage}
+                                    setErrorMessage={setErrorMessage}
+                                />
+                            }
                         />
                         <Route path="/register" element={<RegisterPage />} />
                         <Route

@@ -8,7 +8,6 @@ import AddAPhotoOutlinedIcon from "@mui/icons-material/AddAPhotoOutlined";
 
 const HomePage = (props) => {
     const [feed, setFeed] = useState([]);
-    const [errorMessage, setErrorMessage] = useState("");
     const [replyCounter, setReplyCounter] = useState(0); // used to repload feed
 
     // FIXME: use a result param from api to update part of the feed (instead of load entire feed from backend over and over again)
@@ -21,7 +20,9 @@ const HomePage = (props) => {
             .then((res) => res.json())
             .then((data) => {
                 if (!data.feed) {
-                    setErrorMessage(data.message || "Error loading feed.");
+                    props.setErrorMessage(
+                        data.message || "Error loading feed."
+                    );
                     return;
                 }
                 setFeed(data.feed);
@@ -38,7 +39,7 @@ const HomePage = (props) => {
     };
 
     return (
-        <DefaultPage title="Home" token={props.token}>
+        <DefaultPage title="Home" offTheLine={props.errorMessage}>
             <>
                 <IconButton onClick={openReplyDialog}>
                     <AddAPhotoOutlinedIcon />
@@ -51,7 +52,7 @@ const HomePage = (props) => {
                 />
             </>
 
-            {errorMessage && <p>{errorMessage}</p>}
+            {props.errorMessage && <p>{props.errorMessage}</p>}
             {feed &&
                 feed.map((post) => (
                     <Post

@@ -27,7 +27,11 @@ export default function LoginPage(props) {
                     Login
                 </Typography>
 
-                <LoginForm setToken={props.setToken} />
+                <LoginForm
+                    setToken={props.setToken}
+                    errorMessage={props.errorMessage}
+                    setErrorMessage={props.setErrorMessage}
+                />
 
                 <Grid container>
                     <Grid item xs>
