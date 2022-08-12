@@ -117,6 +117,11 @@ app.get("/users/profile", doAuthMiddleware, async (req, res) => {
   }
 });
 
+app.get("/users/logout", async (req, res) => {
+  req.session.refreshToken = null;
+  res.status(204).end();
+});
+
 app.get("/posts", doAuthMiddleware, async (req, res) => {
   try {
     const feed = await showFeed();

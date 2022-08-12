@@ -9,7 +9,7 @@ import { createTheme, ThemeProvider } from "@mui/material";
 import UserProfilePage from "./components/pages/Profile/UserProfilePage";
 
 function App() {
-  const [token, setToken] = useState();
+  const [token, setToken] = useState(null);
   const [errorMessage, setErrorMessage] = useState("");
 
   let theme = createTheme({
@@ -70,6 +70,7 @@ function App() {
                 <AuthRequired token={token} setToken={setToken}>
                   <HomePage
                     token={token}
+                    setToken={setToken}
                     errorMessage={errorMessage}
                     setErrorMessage={setErrorMessage}
                   />
@@ -80,7 +81,7 @@ function App() {
               path="/profile"
               element={
                 <AuthRequired token={token} setToken={setToken}>
-                  <UserProfilePage token={token} />
+                  <UserProfilePage token={token} setToken={setToken} />
                 </AuthRequired>
               }
             />

@@ -31,7 +31,8 @@ function makeDoAuthMiddleware(validTokenType = "access") {
 
 function extractTokenFromRequest(req, tokenType = "access") {
   if (tokenType === "refresh") {
-    return req.session?.refreshToken || req.body?.refreshToken;
+    const token = req.session?.refreshToken || req.body?.refreshToken;
+    return token;
   }
 
   const tokenInfo = req.headers.token;

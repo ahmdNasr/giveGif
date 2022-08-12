@@ -26,7 +26,7 @@ const HomePage = (props) => {
         }
         setFeed(data.feed);
       });
-  }, [props.token, replyCounter]);
+  }, [props, replyCounter]);
 
   const [addPostDialogOpen, setAddPostDialogOpen] = useState(false);
   const handleCloseDialog = () => {
@@ -38,7 +38,11 @@ const HomePage = (props) => {
   };
 
   return (
-    <DefaultPage title="Home" offTheLine={props.errorMessage}>
+    <DefaultPage
+      title="Home"
+      offTheLine={props.errorMessage}
+      setToken={props.setToken}
+    >
       <>
         <IconButton onClick={openReplyDialog}>
           <AddAPhotoOutlinedIcon />
