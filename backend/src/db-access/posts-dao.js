@@ -24,8 +24,10 @@ async function insertOne(userInfo) {
 
 async function findPostsByUserId(userId) {
   const db = await getDB();
-  const postsOfUser = await db.collection(usersCollectionName).find({ postedBy: userId }).toArray();
-  console.log(postsOfUser);
+  const postsOfUser = await db
+    .collection(usersCollectionName)
+    .find({ postedBy: userId })
+    .toArray();
   return postsOfUser;
 }
 
@@ -50,5 +52,5 @@ module.exports = {
   findById,
   updatePostReplyHell,
   insertOne,
-  findPostsByUserId
+  findPostsByUserId,
 };
