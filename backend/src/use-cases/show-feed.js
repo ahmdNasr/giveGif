@@ -32,7 +32,6 @@ function usersAsDictionaryWithIdAsKey(usersArray) {
 }
 
 function mapPostedByIdsToUserObjectsRecursive(posts, allUsersDictionary) {
-  console.log({ posts });
   // base case
   if (!posts || !allUsersDictionary) {
     return [];

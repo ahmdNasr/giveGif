@@ -1,7 +1,13 @@
 import CssBaseline from "@mui/material/CssBaseline";
 import React, { useState } from "react";
 import LoginPage from "./components/pages/Login/LoginPage";
-import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import {
+  BrowserRouter,
+  Navigate,
+  Route,
+  Routes,
+  useNavigate,
+} from "react-router-dom";
 import RegisterPage from "./components/pages/Register/RegisterPage";
 import HomePage from "./components/pages/Home/HomePage";
 import AuthRequired from "./components/common/AuthRequired";
@@ -9,7 +15,7 @@ import { createTheme, ThemeProvider } from "@mui/material";
 import UserProfilePage from "./components/pages/Profile/UserProfilePage";
 
 function App() {
-  const [token, setToken] = useState();
+  const [token, setToken] = useState(null);
   const [errorMessage, setErrorMessage] = useState("");
 
   let theme = createTheme({
@@ -70,6 +76,7 @@ function App() {
                 <AuthRequired token={token} setToken={setToken}>
                   <HomePage
                     token={token}
+                    setToken={setToken}
                     errorMessage={errorMessage}
                     setErrorMessage={setErrorMessage}
                   />
@@ -80,7 +87,7 @@ function App() {
               path="/profile"
               element={
                 <AuthRequired token={token} setToken={setToken}>
-                  <UserProfilePage token={token} />
+                  <UserProfilePage token={token} setToken={setToken} />
                 </AuthRequired>
               }
             />
