@@ -5,6 +5,7 @@ import Avatar from "@mui/material/Avatar";
 import MuiSwitch from "./../../common/MuiSwitch";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Post from "../../common/Post";
+import AddProfilePicture from "./AddProfilePicture";
 
 const UserProfilePage = (props) => {
   const [profileData, setProfileData] = useState({});
@@ -66,6 +67,8 @@ const UserProfilePage = (props) => {
         profileData.posts.map((post) => (
           <Post key={post._id} {...post} token={props.token} />
         ))}
+
+      <AddProfilePicture token={props.token} />
     </DefaultPage>
   );
 };

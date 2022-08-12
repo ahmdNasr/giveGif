@@ -13,6 +13,9 @@ const { postGiveGif } = require("./use-cases/post-give-gif");
 const { replyToPost } = require("./use-cases/reply-to-post");
 const { showMyProfile } = require("./use-cases/show-my-profile");
 const { changeUserStatus } = require("./use-cases/change-user-status");
+const {
+  changeProfilePictrue,
+} = require("./use-cases/change-user-profile-picture");
 
 const PORT = 9000;
 const app = express();
@@ -117,6 +120,8 @@ app.get("/users/profile", doAuthMiddleware, async (req, res) => {
   }
 });
 
+app.get;
+
 app.get("/users/logout", async (req, res) => {
   req.session.refreshToken = null;
   res.status(204).end();
@@ -200,6 +205,36 @@ app.put("/users/changestatus", doAuthMiddleware, async (req, res) => {
     });
   }
 });
+
+const profilePicStorage = multer.diskStorage({
+  destination: function (_, _, cb) {
+    cb(null, "uploads/profilePictures");
+  },
+  filename: function (_, file, cb) {
+    cb(null, Date.now() + "_" + file.originalname); //Appending extension
+  },
+});
+const profilePicUploadMiddleware = multer({ profilePicStorage }).single(
+  "profilePicture"
+);
+app.put(
+  "/users/profilepic",
+  doAuthMiddleware,
+  profilePicUploadMiddleware,
+  async (req, res) => {
+    try {
+      const profilePicture = req.file.filename;
+      const userId = req.userClaims.sub;
+      const response = await changeProfilePictrue({ userId, profilePicture });
+      res.json(response);
+    } catch (err) {
+      console.log(err);
+      res.status(500).json({
+        message: err.toString() || "Error uploading your gif as reply.",
+      });
+    }
+  }
+);
 
 app.listen(PORT, () => console.log("Server listening at PORT", PORT));
 

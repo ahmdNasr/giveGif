@@ -53,6 +53,17 @@ async function findUserAndUpdateStatus({ userId, status }) {
     );
 }
 
+async function findUserAndUpdateProfilePicture({ userId, profilePicture }) {
+  const db = await getDB();
+  return db
+    .collection(usersCollectionName)
+    .findOneAndUpdate(
+      { _id: ObjectId(userId) },
+      { $set: { profilePicture } },
+      { returnDocument: "after" }
+    );
+}
+
 module.exports = {
   findAll,
   findById,
@@ -60,4 +71,5 @@ module.exports = {
   findByEmail,
   insertOne,
   findUserAndUpdateStatus,
+  findUserAndUpdateProfilePicture,
 };
